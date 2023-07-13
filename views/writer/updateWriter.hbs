@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <style>
+        form >input{
+            margin-bottom: 10px ;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar" class="active">
+            <ul class="list-unstyled components mb-5">
+                <li class="active">
+                    <a href="/"><span class="fa fa-home"></span> Home</a>
+                </li>
+                <li class="active">
+                    <a href="/writer/infoWriter"><span class="fa fa-home"></span>Info Writer</a>
+                </li>
+                <li>
+                    <a href="/writer/updateWriter"><span class="fa fa-user"></span>Update Profile</a>
+                </li>
+                <li>
+                    <a href="/writer/notification"><span class="fa fa-user"></span>Notification</a>
+                </li>
+                <li>
+                    <a href="/writer/uploadNews"><span class="fas fa-archive"></span>Upload Article</a>
+                </li>
+                <li>
+                    <a href="/writer/articlesUploaded"><span class="fa fa-sticky-note"></span>Articles uploaded</a>
+                </li>
+            </ul>
+
+            <div class="footer">
+                <p>
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script>
+                    All rights reserved by University of Greenwich
+                </p>
+            </div>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content" class="p-4 p-md-5">
+            <div class="container">
+                <div class="table-wrapper">
+                    <form action="updateWriter" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="txtId" value="{{data._id}}">
+                        Avatar: <input type="file" name="folderImages" value="{{data.files.filename}}"><br>
+                        Name: <input type="text" name="txtName" value="{{data.name}}"><br>
+                        Age: <input type="text" name="txtAge" value="{{data.age}}"><br>
+                        Email: <input type="email" name="txtEmail" value="{{data.email}}"><br>
+                        Phone: <input type="text" name="txtPhone" value="{{data.phone}}"><br>
+                        Address: <input type="text" name="txtAddress" value="{{data.address}}"><br>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-primary"><a href="/writer/infoWriter" style="color: white;">Cancel</a></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/popper.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/main.js"></script>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>

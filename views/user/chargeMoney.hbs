@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../mystyle.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="chargeMoney" method="POST">
+        <p>Choose the amount you want to deposit (the transaction fee is 20%):</p>
+        <select id="mySelect" name="txtSelect" class="w-25 d-inline">
+            <option value="20000">20.000 VND(= 16$)</option>
+            <option value="50000">50.000 VND(= 40$)</option>
+            <option value="100000">100.000 VND(= 80$)</option>
+            <option value="200000">200.000 VND(= 160$)</option>
+            <option value="500000">500.000 VND(= 400$)</option>
+        </select>
+        <br>
+        <input type="submit" value="Charge">
+    </form>
+    <script>
+        function myFunction() {
+            alert("Are you sure you want to recharge this amount?");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <title>Detail Newspaper</title>
+    <style>
+        .container-fluid {
+            background-color: #B00020;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+        .nav-link:hover {
+            background-color: #9a0007;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 14px;
+            color: #222;
+        }
+
+        a:hover {
+            color: #cc0000;
+        }
+
+        .listComment {
+            list-style-type: none;
+            border-bottom: 1px solid #e6e6e6;
+            width: 90%;
+            margin-bottom: 5px;
+            padding: 5px 0px 5px 5px;
+        }
+
+        .listReply {
+            list-style-type: none;
+            width: 90%;
+            margin-bottom: 5px;
+            padding: 5px 0px 5px 5px;
+        }
+
+        .form-comment {
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+            margin-top: 10px;
+            padding-left: 10px;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="hidden" id="userName" value="{{user.name}}">
+    <input type="hidden" id="newsID" value="{{news._id}}">
+    <input type="hidden" id="writerID" value="{{news.idWriter}}">
+    <input type="hidden" id="checkSub1" value="{{checkSub1}}">
+    <input type="hidden" id="checkSub2" value="{{checkSub2}}">
+    <input type="hidden" id="checkLike1" value="{{checkLike1}}">
+    <input type="hidden" id="checkLike2" value="{{checkLike2}}">
+    <input type="hidden" id="checkLogin" value="{{checkLogin}}">
+
+
+
+    <nav class="navbar navbar-expand-sm ">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/user/"><i class='fas fa-home'
+                            style='font-size:24px;color:rgb(255, 255, 255)'></i></a>
+                </li>
+                {{#each category}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/newsOfCategory?id={{_id}}">{{name}}</a>
+                </li>
+                {{/each}}
+            </ul>
+            {{#if checkUser}}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </ul>
+            {{else}}
+            <ul class="navbar-nav">
+                <li class="nav-item" style="text-align: left;padding-top: 6px;">
+                    <a class="nav-link" href="/user/chargeMoney">
+                        <i class="fa fa-plus-circle"> {{user.coin}} $</i>
+                    </a>
+                </li>
+                <div class="btn-group">
+                    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class='fas fa-user-circle' style='font-size:36px;color:white'></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="nav-item" style="text-align: left;">
+                            <a class="nav-link" href="/user/infoUser" style="color:black">Profile</a>
+                        </li>
+                        <li class="nav-item" style="text-align: left;">
+                            <a class="nav-link" href="/logout" style="color:black">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+            {{/if}}
+        </div>
+    </nav>
+    <div>
+        <div class="row justify-content-center">
+            <div class="col-sm-7">
+                <p style="font-size: 24px; font-weight: bold;">{{news.title}}</p>
+                <img src="../../images/{{writer.files.filename}}" alt="{{writer.name}}" width="34px" height="34px"
+                    style="border-radius: 50%;"> {{news.writer}}
+                <span>{{news.date}}</span>
+                {{!-- Subscribe --}}
+                {{#if checkSub1}}
+                <button id="myBtn">Subscribe</button>
+                {{else}}
+                    {{#if checkSub1}}
+                    <button id="myBtn">Subscribe</button>
+                    {{/if}}
+                    {{#if checkSub2}}
+                    <button id="myBtn">Subscribed</button>
+                    {{/if}}
+                {{/if}}
+
+                <br><br>
+                <img src="../../images/{{news.files.filename}}" width="90%" alt="123"><br><br>
+
+                <p style="width: 80%;">{{news.text}}</p> <br><br>
+
+                {{!-- Like --}}
+                {{#if checkLike1}}
+                <button id="btn1">
+                    <i id="like" class='fa fa-heart' style='font-size:24px;color:gray'></i>
+                </button>
+                {{else}}
+                    {{#if checkLike1}}
+                    <button id="btn1">
+                        <i id="like" class='fa fa-heart' style='font-size:24px;color:gray'></i>
+                    </button>
+                    {{/if}}
+                    {{#if checkLike2}}
+                    <button id="btn1">
+                        <i id="like" class='fa fa-heart' style='font-size:24px;color:red'></i>
+                    </button>
+                    {{/if}}
+                {{/if}}
+                {{!-- Comment --}}
+                <div class="form-comment">
+                    <form onsubmit="return postComment(this)" style="margin-bottom:10px ;">
+                        <div class="mb-3 mt-3">
+                            <label for="comment">Comments:</label>
+                            <textarea class="form-control" rows="4" id="comment" name="txtComment" style="width: 98%;"
+                                placeholder="Write a comment..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <ul id="comments">
+                        {{#each comment}}
+                        <li class="listComment">
+                            <span>{{user.name}}</span> <span style="color: gray;">{{date}}</span>
+                            <p style="margin-bottom: 0;">{{comments}}</p>
+                            {{!-- Reply --}}
+                            <ul id="reply">
+                                <div onclick="createReply(this)" comment-id="{{_id}}"
+                                    style="color: blue; cursor: pointer;">
+                                    Reply
+                                </div>
+                                <li class="listReply">
+                                    {{#each reply}}
+                                    <span>{{user.name}}</span> <span style="color: gray;">{{date}}</span>
+                                    <p style="margin-bottom: 0;">{{reply}}</p>
+                                    {{/each}}
+                                </li>
+                            </ul>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div>
+                    {{#each hotNews}}
+                    <div class="item">
+                        <a href="/detailNewsOfWriter?id={{_id}}"><img src="../images/{{files.filename}}"
+                                width="100%" alt=""></a><br>
+                    </div>
+                    <div>
+                        <p><a href="/detailNewsOfWriter?id={{_id}}">{{title}}</a></p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const check = document.querySelector('#checkLogin').value;
+        //subscribe writer
+        var myBtn = document.getElementById("myBtn");
+        myBtn.addEventListener("click", function () {
+            if (check == "Please login") {
+                alert("Please login");
+            } else {
+                var ajax = new XMLHttpRequest;
+                ajax.open("POST", "user-sub")
+                ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                var s = document.getElementById("myBtn").innerHTML;
+                if (s == "Subscribe") {
+                    document.getElementById("myBtn").innerHTML = "Subscribed";
+                }
+                if (s == "Subscribed") {
+                    document.getElementById("myBtn").innerHTML = "Subscribe";
+                }
+
+                const writerID = document.querySelector('#writerID');
+                const idWriter = writerID.value;
+                ajax.send("writerID=" + idWriter);
+            }
+        }, false);
+
+
+        //like newspaper
+        var btn1 = document.getElementById("btn1");
+        btn1.addEventListener("click", function () {
+            if (check == "Please login") {
+                alert("Please login");
+            } else {
+                var ajax = new XMLHttpRequest;
+                ajax.open("POST", "user-like")
+                ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+                if (document.getElementById("like").style.color == "gray") {
+                    document.getElementById("like").style.color = "red"
+                }
+                else {
+                    document.getElementById("like").style.color = "gray"
+                }
+                const newsID = document.querySelector('#newsID');
+                const idNews = newsID.value;
+                ajax.send("newsID=" + idNews);
+            }
+        }, false);
+
+        //user comment newspaper
+        function postComment(comment) {
+            if (check == "Please login") {
+                alert("Please login");
+            } else {
+                var ajax = new XMLHttpRequest;
+                ajax.open("POST", "user-comment")
+                ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                const userName = document.querySelector('#userName').value;
+                const newsID = document.querySelector('#newsID').value;
+                const commentUser = document.querySelector('#comment');
+
+                //date time current
+                const d = new Date();
+                var minutes = d.getMinutes();
+                var formatDate = ""
+
+                if (minutes > 9) {
+                    formatDate = [d.getHours(), d.getMinutes()].join(':') + ' ' + [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/')
+                } else {
+                    var minutes = '0' + minutes;
+                    formatDate = [d.getHours(), minutes].join(':') + ' ' + [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/')
+                }
+                const date = formatDate;
+
+
+                const comments = document.querySelector('#comments');
+                var html = ""
+                html += '<li style = "list-style-type: none;border-bottom: 1px solid #e6e6e6;width: 90%;margin-bottom: 5px;padding: 5px 0px 5px 5px;">';
+                html += '<span>' + userName + '</span>  <span style="color: gray;">' + date + '</span>';
+                html += '<p style="margin-bottom: 0;">' + commentUser.value + '</p>';
+                html += '</li>';
+
+                document.getElementById("comments").innerHTML = html + document.getElementById("comments").innerHTML;
+
+                ajax.send("newsID=" + newsID + "&comment=" + commentUser.value + "&date=" + date);
+
+                commentUser.value = "";
+            }
+            return false;
+        }
+
+        //create reply
+        function createReply(rep) {
+            if (check == "Please login") {
+                alert("Please login");
+            } else {
+                var comment_id = rep.getAttribute("comment-id");
+                var html = "";
+                html += '<div class = "row justify-content-start">';
+                html += '<div class="col-4">';
+                html += '<form onsubmit = "return postReply(this)">';
+                html += '<input type="hidden" name = "commentID" value="' + comment_id + '">'
+                html += '<div class="form-group">';
+                html += '<label>Write reply</label>';
+                html += '<textarea class="form-control" rows = "1" name="reply"></textarea>';
+                html += '</div>';
+                html += '<button type="submit" class="btn btn-primary" comment-id="' + comment_id + '">Post</button>';
+                html += '</form>';
+                html += '</div>';
+                html += '</div>';
+
+                rep.innerHTML = html;
+                rep.removeAttribute("onclick");
+            }
+        }
+        //post reply
+        function postReply(rep) {
+            if (check == "Please login") {
+                alert("Please login");
+            } else {
+                var commentID = rep.commentID.value;
+                var reply = rep.reply.value;
+
+                var ajax = new XMLHttpRequest;
+                ajax.open("POST", "user-reply-comment")
+                ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                //date time current
+                const d = new Date();
+                var minutes = d.getMinutes();
+                var formatDate = ""
+
+                if (minutes > 9) {
+                    formatDate = [d.getHours(), d.getMinutes()].join(':') + ' ' + [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/')
+                } else {
+                    var minutes = '0' + minutes;
+                    formatDate = [d.getHours(), minutes].join(':') + ' ' + [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/')
+                }
+                const date = formatDate;
+
+                const newsID = document.querySelector('#newsID').value;
+                const userName = document.querySelector('#userName').value;
+                const comments = document.querySelector('#comments');
+                var html = ""
+                html += '<li class="listReply">';
+                html += '<span>' + userName + '</span>  <span style="color: gray;">' + date + '</span>';
+                html += '<p style="margin-bottom: 0;">' + rep.reply.value + '</p>';
+                html += '</li>';
+
+                document.getElementById("reply").innerHTML += html;
+                rep.reply.value = "";
+                ajax.send("commentID=" + commentID + "&reply=" + reply + "&newsID=" + newsID + "&date=" + date);
+            }
+            return false;
+        }
+    </script>
+</body>
+
+</html>
